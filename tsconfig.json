@@ -13,7 +13,8 @@
         "esModuleInterop": true,
         "allowJs": true,
         "jsx": "react",
-        "jsxFactory": "createElement"
+        "jsxFactory": "createElement",
+        "skipLibCheck": true
     },
     "include": [
         "./src/**/*"

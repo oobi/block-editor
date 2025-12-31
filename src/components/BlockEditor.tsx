@@ -1,4 +1,4 @@
-import { createElement, useRef } from '@wordpress/element'
+import { createElement, useRef, useState } from '@wordpress/element'
 import {
     BlockEditorProvider,
     BlockInspector,
@@ -8,9 +8,10 @@ import {
     ObserveTyping,
     WritingFlow,
     BlockEditorKeyboardShortcuts,
+    __experimentalListView as ListView,
 } from '@wordpress/block-editor'
 import { ToolbarButton, Popover } from '@wordpress/components'
-import { undo as undoIcon, redo as redoIcon } from '@wordpress/icons'
+import { undo as undoIcon, redo as redoIcon, listView as listViewIcon } from '@wordpress/icons'
 
 import Header from './Header'
 import Sidebar from './Sidebar'
@@ -33,6 +34,7 @@ interface BlockEditorProps {
 
 const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo }: BlockEditorProps) => {
     const inputTimeout = useRef<NodeJS.Timeout|null>(null)
+    const [isListViewOpen, setIsListViewOpen] = useState(false)
 
     const handleInput = (blocks: Block[]) => {
         if (inputTimeout.current) {
@@ -65,12 +67,24 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                     <Inserter renderToggle={InserterToggle} />
                     <ToolbarButton icon={undoIcon} onClick={undo} disabled={!canUndo} className={'history-button'} />
                     <ToolbarButton icon={redoIcon} onClick={redo} disabled={!canRedo} className={'history-button'} />
+                    <ToolbarButton 
+                        icon={listViewIcon} 
+                        onClick={() => setIsListViewOpen(!isListViewOpen)} 
+                        isPressed={isListViewOpen}
+                        aria-expanded={isListViewOpen}
+                        label="List view"
+                    />
                 </Header.Fill>
                 <Sidebar.Fill>
                     <BlockInspector />
                 </Sidebar.Fill>
                 <BlockTools>
                     <BlockEditorKeyboardShortcuts.Register/>
+                    {isListViewOpen && (
+                        <div className="block-editor__list-view-panel">
+                            <ListView />
+                        </div>
+                    )}
                     <div className="editor-styles-wrapper">
                         <WritingFlow>
                             <ObserveTyping>
