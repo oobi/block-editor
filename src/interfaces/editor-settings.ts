@@ -19,6 +19,13 @@ export interface FontSize {
     size: number
 }
 
+export interface EditorStyle {
+    css?: string,
+    baseURL?: string,
+    __unstableType?: string,
+    isGlobalStyles?: boolean,
+}
+
 export default interface EditorSettings {
     // Laraberg settings
     height?: string,
@@ -35,5 +42,12 @@ export default interface EditorSettings {
     colors?: Color[],
     gradients?: Gradient[],
     fontSizes?: FontSize[],
-}
 
+    // Iframe/canvas settings
+    styles?: EditorStyle[],
+    __unstableResolvedAssets?: {
+        styles?: string,
+        scripts?: string,
+    },
+    __internalIsInitialized?: boolean,
+}

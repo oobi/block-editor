@@ -48,10 +48,10 @@ $test: 1;
 
     .block-editor__editor {
         flex: 1;
-        padding: 1rem;
-        overflow-y: auto;
+        overflow: hidden;
         display: flex;
         gap: 0;
+        position: relative;
     }
 
     .block-editor__list-view-panel {
@@ -63,62 +63,33 @@ $test: 1;
         max-height: 100%;
     }
 
-    .block-editor-block-tools {
+    // Iframe canvas container styles
+    .block-editor-iframe__container {
         flex: 1;
         min-width: 0;
         display: flex;
         flex-direction: column;
     }
 
-    .editor-styles-wrapper {
+    .block-editor-iframe__scale-container {
+        flex: 1;
+        min-height: 0;
+    }
+
+    // The iframe itself
+    iframe[name="editor-canvas"] {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    // Block tools wrapper (toolbar, selection outlines, etc.)
+    .block-editor-block-tools {
         flex: 1;
         min-width: 0;
-        padding: 1rem;
-
-        // Layout support styles - ensure root container fills editor width
-        .is-root-container,
-        .block-editor-block-list__layout {
-            width: 100%;
-        }
-
-        // Flow layout (default)
-        .is-layout-flow > * {
-            margin-block-start: 0;
-            margin-block-end: 0;
-        }
-
-        .is-layout-flow > * + * {
-            margin-block-start: 1.5em;
-        }
-
-        // Flex layout (for columns, buttons, etc.)
-        .is-layout-flex {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5em;
-        }
-
-        // Grid layout
-        .is-layout-grid {
-            display: grid;
-            gap: 1.5em;
-        }
-
-        // Constrained layout
-        .is-layout-constrained > * {
-            max-width: var(--wp--style--global--content-size, 650px);
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .is-layout-constrained > .alignwide {
-            max-width: var(--wp--style--global--wide-size, 1000px);
-        }
-
-        .is-layout-constrained > .alignfull {
-            max-width: none;
-        }
+        display: flex;
+        flex-direction: column;
+        position: relative;
     }
 
     .block-editor__sidebar {

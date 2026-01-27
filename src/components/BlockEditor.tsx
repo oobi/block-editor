@@ -1,16 +1,11 @@
-import { createElement, useRef, useState } from '@wordpress/element'
-import { useMergeRefs } from '@wordpress/compose'
+import { createElement, useRef, useState, useMemo } from '@wordpress/element'
 import {
     BlockEditorProvider,
     BlockInspector,
-    BlockList,
-    BlockTools,
+    BlockCanvas,
     Inserter,
-    ObserveTyping,
-    WritingFlow,
     BlockEditorKeyboardShortcuts,
     __experimentalListView as ListView,
-    __unstableUseBlockSelectionClearer as useBlockSelectionClearer,
 } from '@wordpress/block-editor'
 import { ToolbarButton, Popover } from '@wordpress/components'
 import { undo as undoIcon, redo as redoIcon, listView as listViewIcon } from '@wordpress/icons'
@@ -36,12 +31,20 @@ interface BlockEditorProps {
 
 const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo }: BlockEditorProps) => {
     const inputTimeout = useRef<NodeJS.Timeout|null>(null)
-    const contentRef = useRef<HTMLDivElement>(null)
     const [isListViewOpen, setIsListViewOpen] = useState(false)
 
-    // This hook clears block selection when clicking outside blocks
-    const blockSelectionClearerRef = useBlockSelectionClearer()
-    const mergedRef = useMergeRefs([contentRef, blockSelectionClearerRef])
+    // Prepare content styles for the iframe
+    const contentStyles = useMemo(() => {
+        return settings.styles || []
+    }, [settings.styles])
+
+    // Prepare editor settings with iframe initialization flag
+    const editorSettings = useMemo(() => {
+        return {
+            ...settings,
+            __internalIsInitialized: true,
+        }
+    }, [settings])
 
     const handleInput = (blocks: Block[]) => {
         if (inputTimeout.current) {
@@ -67,7 +70,7 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                 value={blocks}
                 onInput={handleInput}
                 onChange={handleChange}
-                settings={settings}
+                settings={editorSettings}
             >
                 <Notices/>
                 <Header.Fill>
@@ -90,20 +93,10 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                         <ListView />
                     </div>
                 )}
-                <BlockTools __unstableContentRef={contentRef}>
-                    <BlockEditorKeyboardShortcuts.Register/>
-                    <div
-                        ref={mergedRef}
-                        className="editor-styles-wrapper"
-                        style={{ height: '100%', width: '100%' }}
-                    >
-                        <WritingFlow style={{ height: '100%', width: '100%' }}>
-                            <ObserveTyping>
-                                <BlockList />
-                            </ObserveTyping>
-                        </WritingFlow>
-                    </div>
-                </BlockTools>
+                <BlockCanvas
+                    height="100%"
+                    styles={contentStyles}
+                />
                 <Popover.Slot/>
             </BlockEditorProvider>
         </div>
