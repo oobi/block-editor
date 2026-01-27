@@ -1,4 +1,5 @@
-import { useState, useEffect, render, createElement, StrictMode, unmountComponentAtNode } from '@wordpress/element'
+import { useState, useEffect, createElement, StrictMode, createRoot } from '@wordpress/element'
+import type { Root } from 'react-dom/client'
 import apiFetch from '@wordpress/api-fetch'
 import { SlotFillProvider } from '@wordpress/components'
 import { parse, serialize } from '@wordpress/blocks'
@@ -15,6 +16,9 @@ import EditorSettings from '../interfaces/editor-settings'
 import { select, dispatch, useSelect, useDispatch } from '@wordpress/data'
 import defaultSettings from '../lib/default-settings'
 import KeyboardShortcuts from './KeyboardShortcuts'
+
+// Track React roots for cleanup (React 18 createRoot API)
+const editorRoots = new WeakMap<Element, Root>()
 
 
 export interface EditorProps {
@@ -108,7 +112,11 @@ const removeEditor = (element: HTMLInputElement | HTMLTextAreaElement) => {
 
     const container = element.parentNode?.querySelector('.block-editor-container')
     if (container) {
-        unmountComponentAtNode(container)
+        const root = editorRoots.get(container)
+        if (root) {
+            root.unmount()
+            editorRoots.delete(container)
+        }
         container.remove()
     }
 }
@@ -123,14 +131,16 @@ const initializeEditor = (element: HTMLInputElement | HTMLTextAreaElement, setti
 
     doAction('blockEditor.beforeInit', container)
 
-    render(
+    const root = createRoot(container)
+    editorRoots.set(container, root)
+    
+    root.render(
         <Editor
             settings={applyFilters('blockEditor.settings', {...defaultSettings, ...settings}) as EditorSettings}
             onChange={input.setValue}
             value={input.getValue() || undefined}
             input={input.element}
-        />,
-        container
+        />
     )
 
     doAction('blockEditor.afterInit', container)
