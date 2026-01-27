@@ -133,7 +133,7 @@ const initializeEditor = (element: HTMLInputElement | HTMLTextAreaElement, setti
 
     const root = createRoot(container)
     editorRoots.set(container, root)
-    
+
     root.render(
         <Editor
             settings={applyFilters('blockEditor.settings', {...defaultSettings, ...settings}) as EditorSettings}

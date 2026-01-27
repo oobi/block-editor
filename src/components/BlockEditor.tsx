@@ -67,9 +67,9 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                     <Inserter renderToggle={InserterToggle} />
                     <ToolbarButton icon={undoIcon} onClick={undo} disabled={!canUndo} className={'history-button'} />
                     <ToolbarButton icon={redoIcon} onClick={redo} disabled={!canRedo} className={'history-button'} />
-                    <ToolbarButton 
-                        icon={listViewIcon} 
-                        onClick={() => setIsListViewOpen(!isListViewOpen)} 
+                    <ToolbarButton
+                        icon={listViewIcon}
+                        onClick={() => setIsListViewOpen(!isListViewOpen)}
                         isPressed={isListViewOpen}
                         aria-expanded={isListViewOpen}
                         label="List view"
@@ -78,15 +78,15 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                 <Sidebar.Fill>
                     <BlockInspector />
                 </Sidebar.Fill>
+                {isListViewOpen && (
+                    <div className="block-editor__list-view-panel">
+                        <ListView />
+                    </div>
+                )}
                 <BlockTools>
                     <BlockEditorKeyboardShortcuts.Register/>
-                    {isListViewOpen && (
-                        <div className="block-editor__list-view-panel">
-                            <ListView />
-                        </div>
-                    )}
-                    <div className="editor-styles-wrapper">
-                        <WritingFlow>
+                    <div className="editor-styles-wrapper" style={{ height: '100%', width: '100%' }}>
+                        <WritingFlow style={{ height: '100%', width: '100%' }}>
                             <ObserveTyping>
                                 <BlockList />
                             </ObserveTyping>

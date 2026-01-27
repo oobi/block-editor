@@ -21,7 +21,7 @@ const defaultSettings: EditorSettings = {
 
     // WordPress settings
     alignWide: true,
-    supportsLayout: false,
+    supportsLayout: true,
 }
 
 export default defaultSettings

@@ -3,13 +3,18 @@
 // Import pre-built WordPress CSS files
 @import "../node_modules/@wordpress/components/build-style/style.css";
 @import "../node_modules/@wordpress/block-editor/build-style/style.css";
+@import "../node_modules/@wordpress/block-editor/build-style/content.css";
 @import "../node_modules/@wordpress/block-library/build-style/style.css";
 @import "../node_modules/@wordpress/block-library/build-style/theme.css";
+@import "../node_modules/@wordpress/block-library/build-style/editor.css";
 @import "../node_modules/@wordpress/format-library/build-style/style.css";
 
 $sidebar-width: 300px;
 $border-color: #e0e0e0;
 $test: 1;
+
+// Note: Most block styles come from WordPress CSS imports above.
+// Only add overrides here if absolutely necessary for our editor context.
 
 .block-editor-container {
     position: relative;
@@ -46,20 +51,74 @@ $test: 1;
         padding: 1rem;
         overflow-y: auto;
         display: flex;
-        gap: 1rem;
+        gap: 0;
     }
 
     .block-editor__list-view-panel {
-        width: 250px;
+        flex: 0 0 250px;
         border-right: 1px solid $border-color;
-        padding: 1rem;
+        padding: 0.5rem;
         overflow-y: auto;
         background: #fff;
+        max-height: 100%;
+    }
+
+    .block-editor-block-tools {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     .editor-styles-wrapper {
         flex: 1;
         min-width: 0;
+        padding: 1rem;
+
+        // Layout support styles - ensure root container fills editor width
+        .is-root-container,
+        .block-editor-block-list__layout {
+            width: 100%;
+        }
+
+        // Flow layout (default)
+        .is-layout-flow > * {
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+
+        .is-layout-flow > * + * {
+            margin-block-start: 1.5em;
+        }
+
+        // Flex layout (for columns, buttons, etc.)
+        .is-layout-flex {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        // Grid layout
+        .is-layout-grid {
+            display: grid;
+            gap: 1.5em;
+        }
+
+        // Constrained layout
+        .is-layout-constrained > * {
+            max-width: var(--wp--style--global--content-size, 650px);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .is-layout-constrained > .alignwide {
+            max-width: var(--wp--style--global--wide-size, 1000px);
+        }
+
+        .is-layout-constrained > .alignfull {
+            max-width: none;
+        }
     }
 
     .block-editor__sidebar {
