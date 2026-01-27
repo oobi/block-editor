@@ -38,7 +38,7 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
     const inputTimeout = useRef<NodeJS.Timeout|null>(null)
     const contentRef = useRef<HTMLDivElement>(null)
     const [isListViewOpen, setIsListViewOpen] = useState(false)
-    
+
     // This hook clears block selection when clicking outside blocks
     const blockSelectionClearerRef = useBlockSelectionClearer()
     const mergedRef = useMergeRefs([contentRef, blockSelectionClearerRef])
@@ -92,9 +92,9 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                 )}
                 <BlockTools __unstableContentRef={contentRef}>
                     <BlockEditorKeyboardShortcuts.Register/>
-                    <div 
+                    <div
                         ref={mergedRef}
-                        className="editor-styles-wrapper" 
+                        className="editor-styles-wrapper"
                         style={{ height: '100%', width: '100%' }}
                     >
                         <WritingFlow style={{ height: '100%', width: '100%' }}>
