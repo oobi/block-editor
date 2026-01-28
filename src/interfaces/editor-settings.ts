@@ -43,6 +43,15 @@ export default interface EditorSettings {
     gradients?: Gradient[],
     fontSizes?: FontSize[],
 
+    // Layout settings for wide/full width alignments
+    __experimentalFeatures?: {
+        layout?: {
+            contentSize?: string,
+            wideSize?: string,
+        },
+        [key: string]: any,
+    },
+
     // Iframe/canvas settings
     styles?: EditorStyle[],
     __unstableResolvedAssets?: {

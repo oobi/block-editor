@@ -4,6 +4,7 @@ import {
     BlockInspector,
     BlockCanvas,
     BlockEditorKeyboardShortcuts,
+    BlockList,
 } from '@wordpress/block-editor'
 import { ToolbarButton, Popover } from '@wordpress/components'
 import { undo as undoIcon, redo as redoIcon, listView as listViewIcon, plus as plusIcon } from '@wordpress/icons'
@@ -37,6 +38,16 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
     const contentStyles = useMemo(() => {
         return settings.styles || []
     }, [settings.styles])
+
+    // Get layout settings (contentSize/wideSize) for wide/full alignments
+    const rootLayout = useMemo(() => {
+        const layoutSettings = settings.__experimentalFeatures?.layout || {}
+        return {
+            type: 'constrained',
+            contentSize: layoutSettings.contentSize || '800px',
+            wideSize: layoutSettings.wideSize || '1200px',
+        }
+    }, [settings.__experimentalFeatures?.layout])
 
     // Prepare editor settings with iframe initialization flag
     const editorSettings = useMemo(() => {
@@ -106,7 +117,9 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                     <BlockCanvas
                         height="100%"
                         styles={contentStyles}
-                    />
+                    >
+                        <BlockList layout={rootLayout} />
+                    </BlockCanvas>
                 </div>
                 <div className="block-editor__footer">
                     <BlockBreadcrumb rootLabelText="Document" />

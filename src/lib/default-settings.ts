@@ -49,6 +49,19 @@ const defaultSettings: EditorSettings = {
     // WordPress settings
     alignWide: true,
     supportsLayout: true,
+    
+    // Layout and typography settings
+    // - layout: enables wide/full width alignment options
+    // - typography.textAlign: enables text alignment controls (left/center/right)
+    __experimentalFeatures: {
+        layout: {
+            contentSize: '800px',
+            wideSize: '1200px',
+        },
+        typography: {
+            textAlign: true,
+        },
+    },
 
     // Default editor styles for the iframe content
     styles: [
