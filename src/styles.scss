@@ -63,13 +63,33 @@ $test: 1;
         min-height: 0;
     }
 
+    .block-editor__footer {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        border-top: solid 1px $border-color;
+        background: #fff;
+        flex-shrink: 0;
+        min-height: 32px;
+        font-size: 13px;
+    }
+
     .block-editor__editor {
         flex: 1;
         overflow: hidden;
         display: flex;
+        flex-direction: column;
         gap: 0;
         position: relative;
         min-height: 0;
+    }
+
+    .block-editor__canvas-area {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        min-height: 0;
+        overflow: hidden;
 
         // Target the BlockCanvas wrapper div that has inline height/display styles
         > div[style*="height"] {

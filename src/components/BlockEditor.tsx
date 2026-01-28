@@ -13,6 +13,7 @@ import { undo as undoIcon, redo as redoIcon, listView as listViewIcon } from '@w
 import Header from './Header'
 import Sidebar from './Sidebar'
 import InserterToggle from './InserterToggle'
+import BlockBreadcrumb from './BlockBreadcrumb'
 import EditorSettings from '../interfaces/editor-settings'
 import Block from '../interfaces/block'
 import Notices from "./Notices"
@@ -88,15 +89,20 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                 <Sidebar.Fill>
                     <BlockInspector />
                 </Sidebar.Fill>
-                {isListViewOpen && (
-                    <div className="block-editor__list-view-panel">
-                        <ListView />
-                    </div>
-                )}
-                <BlockCanvas
-                    height="100%"
-                    styles={contentStyles}
-                />
+                <div className="block-editor__canvas-area">
+                    {isListViewOpen && (
+                        <div className="block-editor__list-view-panel">
+                            <ListView />
+                        </div>
+                    )}
+                    <BlockCanvas
+                        height="100%"
+                        styles={contentStyles}
+                    />
+                </div>
+                <div className="block-editor__footer">
+                    <BlockBreadcrumb rootLabelText="Document" />
+                </div>
                 <Popover.Slot/>
             </BlockEditorProvider>
         </div>
