@@ -25,6 +25,34 @@ p {
   font-size: 2.5em;
   font-weight: 800;
 }
+
+/* Bottom block appender styles */
+.block-editor__bottom-appender {
+  display: flex;
+  justify-content: center;
+}
+
+.block-editor__bottom-appender-button {
+  width: 100%;
+  height: 40vh;
+  border: none;
+  background: #f9f9f9;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.block-editor__bottom-appender-button:hover,
+.block-editor__bottom-appender-button:focus {
+  opacity: 1;
+  outline: none;
+}
+
+.block-editor__bottom-appender-button svg {
+  fill: #1e1e1e;
+  width: 24px;
+  height: 24px;
+}
 `;
 
 const defaultSettings: EditorSettings = {

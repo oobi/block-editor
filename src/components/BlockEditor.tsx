@@ -14,6 +14,7 @@ import Sidebar from './Sidebar'
 import LeftSidebar from './LeftSidebar'
 import type { LeftSidebarView } from './LeftSidebar'
 import BlockBreadcrumb from './BlockBreadcrumb'
+import BottomBlockAppender from './BottomBlockAppender'
 import EditorSettings from '../interfaces/editor-settings'
 import Block from '../interfaces/block'
 import Notices from "./Notices"
@@ -119,6 +120,7 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                         styles={contentStyles}
                     >
                         <BlockList layout={rootLayout} />
+                        <BottomBlockAppender />
                     </BlockCanvas>
                 </div>
                 <div className="block-editor__footer">
