@@ -11,6 +11,7 @@ import { registerBlocks } from '../lib/blocks'
 import BlockEditor from './BlockEditor'
 import Header from './Header'
 import Sidebar from './Sidebar'
+import CodeEditor from './CodeEditor'
 import BindInput from '../lib/bind-input'
 import EditorSettings from '../interfaces/editor-settings'
 import { select, dispatch, useSelect, useDispatch } from '@wordpress/data'
@@ -30,6 +31,7 @@ export interface EditorProps {
 
 const Editor = ({ settings, onChange, input, value }: EditorProps) => {
     const [sidebarOpen, setSidebarOpen] = useState(true)
+    const [isCodeEditor, setIsCodeEditor] = useState(false)
     const { setBlocks, undo, redo } = useDispatch('block-editor')
 
     const { blocks, canUndo, canRedo } = useSelect(select => {
@@ -44,7 +46,7 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
      * Check if a block is an empty paragraph
      */
     const isEmptyParagraph = (block: any) => {
-        return block?.name === 'core/paragraph' && 
+        return block?.name === 'core/paragraph' &&
                (!block.attributes?.content || block.attributes.content === '')
     }
 
@@ -55,12 +57,12 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
         if (blockList.length === 0) {
             return [createBlock('core/paragraph')]
         }
-        
+
         const lastBlock = blockList[blockList.length - 1]
         if (!isEmptyParagraph(lastBlock)) {
             return [...blockList, createBlock('core/paragraph')]
         }
-        
+
         return blockList
     }
 
@@ -105,6 +107,17 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
         setSidebarOpen(!sidebarOpen)
     }
 
+    const toggleCodeEditor = () => {
+        setIsCodeEditor(!isCodeEditor)
+    }
+
+    /**
+     * Handle code editor changes - when exiting code view
+     */
+    const handleCodeEditorChange = (newBlocks: any[]) => {
+        setBlocks(ensureTrailingParagraph(newBlocks))
+    }
+
     return (
         <StrictMode>
             <SlotFillProvider>
@@ -113,21 +126,34 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
                         <KeyboardShortcuts.Register/>
                         <KeyboardShortcuts/>
 
-                        <Header toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
+                        <Header 
+                            toggleSidebar={toggleSidebar} 
+                            sidebarOpen={sidebarOpen}
+                            toggleCodeEditor={toggleCodeEditor}
+                            isCodeEditor={isCodeEditor}
+                        />
 
                         <div
                             className="block-editor__content"
                             style={{height: settings.height}}
                         >
-                            <BlockEditor
-                                blocks={blocks}
-                                onChange={handleBlocksChange}
-                                undo={undo}
-                                redo={redo}
-                                canUndo={canUndo}
-                                canRedo={canRedo}
-                                settings={settings}
-                            />
+                            {isCodeEditor ? (
+                                <CodeEditor
+                                    blocks={blocks}
+                                    onChange={handleCodeEditorChange}
+                                    onExit={() => setIsCodeEditor(false)}
+                                />
+                            ) : (
+                                <BlockEditor
+                                    blocks={blocks}
+                                    onChange={handleBlocksChange}
+                                    undo={undo}
+                                    redo={redo}
+                                    canUndo={canUndo}
+                                    canRedo={canRedo}
+                                    settings={settings}
+                                />
+                            )}
 
                             {sidebarOpen && <Sidebar/>}
                         </div>
