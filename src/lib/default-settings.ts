@@ -1,66 +1,30 @@
 import EditorSettings from "../interfaces/editor-settings";
 
-// Default content styles to inject into the iframe canvas
-const defaultContentStyles = `
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-        font-size: 16px;
-        line-height: 1.6;
-        color: #1e1e1e;
-        margin: 0;
-        padding: 0;
-    }
+// Default editor styles that WordPress uses when no theme styles are present
+const defaultEditorStylesCss = `
+/**
+ * Default editor styles.
+ *
+ * These styles are shown if a theme does not register its own editor style,
+ * a theme.json file, or has toggled off "Use theme styles" in preferences.
+ */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  --wp--style--block-gap: 2em;
+}
 
-    .is-root-container {
-        padding: 1rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
+p {
+  line-height: 1.8;
+}
 
-    /* Layout support styles */
-    .is-root-container,
-    .block-editor-block-list__layout {
-        width: 100%;
-    }
-
-    /* Flow layout (default) */
-    .is-layout-flow > * {
-        margin-block-start: 0;
-        margin-block-end: 0;
-    }
-
-    .is-layout-flow > * + * {
-        margin-block-start: 1.5em;
-    }
-
-    /* Flex layout (for columns, buttons, etc.) */
-    .is-layout-flex {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5em;
-    }
-
-    /* Grid layout */
-    .is-layout-grid {
-        display: grid;
-        gap: 1.5em;
-    }
-
-    /* Constrained layout */
-    .is-layout-constrained > * {
-        max-width: var(--wp--style--global--content-size, 650px);
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .is-layout-constrained > .alignwide {
-        max-width: var(--wp--style--global--wide-size, 1000px);
-    }
-
-    .is-layout-constrained > .alignfull {
-        max-width: none;
-    }
+.editor-post-title__block {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  font-size: 2.5em;
+  font-weight: 800;
+}
 `;
 
 const defaultSettings: EditorSettings = {
@@ -86,15 +50,20 @@ const defaultSettings: EditorSettings = {
     alignWide: true,
     supportsLayout: true,
 
+    // Default editor styles for the iframe content
+    styles: [
+        { css: defaultEditorStylesCss }
+    ],
+
+    // Resolved assets - these are injected into the iframe's <head>
+    // The laraberg.css path will be determined at runtime by the consumer
+    __unstableResolvedAssets: {
+        styles: '',
+        scripts: ''
+    },
+
     // Iframe/canvas settings - mark as initialized for BlockCanvas
     __internalIsInitialized: true,
-
-    // Default content styles for the iframe canvas
-    styles: [
-        {
-            css: defaultContentStyles,
-        },
-    ],
 }
 
 export default defaultSettings

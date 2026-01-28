@@ -126,6 +126,7 @@ const initializeEditor = (element: HTMLInputElement | HTMLTextAreaElement, setti
 
     const container = document.createElement('div')
     container.classList.add('block-editor-container')
+    container.classList.add('gutenberg__editor')
     input.getElement().insertAdjacentElement('afterend', container)
     input.getElement().style.display = 'none';
 
@@ -147,7 +148,7 @@ const initializeEditor = (element: HTMLInputElement | HTMLTextAreaElement, setti
 }
 
 const preventSubmit = (event: SubmitEvent) => {
-    if (event.submitter?.matches('.block-editor *')) {
+    if (event.submitter?.matches('.block-editor-container *')) {
         event.preventDefault()
         event.stopPropagation()
         event.stopImmediatePropagation()
