@@ -3,16 +3,15 @@ import {
     BlockEditorProvider,
     BlockInspector,
     BlockCanvas,
-    Inserter,
     BlockEditorKeyboardShortcuts,
-    __experimentalListView as ListView,
 } from '@wordpress/block-editor'
 import { ToolbarButton, Popover } from '@wordpress/components'
-import { undo as undoIcon, redo as redoIcon, listView as listViewIcon } from '@wordpress/icons'
+import { undo as undoIcon, redo as redoIcon, listView as listViewIcon, plus as plusIcon } from '@wordpress/icons'
 
 import Header from './Header'
 import Sidebar from './Sidebar'
-import InserterToggle from './InserterToggle'
+import LeftSidebar from './LeftSidebar'
+import type { LeftSidebarView } from './LeftSidebar'
 import BlockBreadcrumb from './BlockBreadcrumb'
 import EditorSettings from '../interfaces/editor-settings'
 import Block from '../interfaces/block'
@@ -32,7 +31,7 @@ interface BlockEditorProps {
 
 const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo }: BlockEditorProps) => {
     const inputTimeout = useRef<NodeJS.Timeout|null>(null)
-    const [isListViewOpen, setIsListViewOpen] = useState(false)
+    const [leftSidebarView, setLeftSidebarView] = useState<LeftSidebarView | null>(null)
 
     // Prepare content styles for the iframe
     const contentStyles = useMemo(() => {
@@ -65,6 +64,10 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
         onChange(blocks)
     }
 
+    const toggleLeftSidebar = (view: LeftSidebarView) => {
+        setLeftSidebarView(current => current === view ? null : view)
+    }
+
     return (
         <div className="block-editor__editor wp-embed-responsive">
             <BlockEditorProvider
@@ -75,14 +78,20 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
             >
                 <Notices/>
                 <Header.Fill>
-                    <Inserter renderToggle={InserterToggle} />
+                    <ToolbarButton
+                        icon={plusIcon}
+                        onClick={() => toggleLeftSidebar('inserter')}
+                        isPressed={leftSidebarView === 'inserter'}
+                        label="Toggle block inserter"
+                        className="block-editor__inserter-toggle"
+                    />
                     <ToolbarButton icon={undoIcon} onClick={undo} disabled={!canUndo} className={'history-button'} />
                     <ToolbarButton icon={redoIcon} onClick={redo} disabled={!canRedo} className={'history-button'} />
                     <ToolbarButton
                         icon={listViewIcon}
-                        onClick={() => setIsListViewOpen(!isListViewOpen)}
-                        isPressed={isListViewOpen}
-                        aria-expanded={isListViewOpen}
+                        onClick={() => toggleLeftSidebar('listview')}
+                        isPressed={leftSidebarView === 'listview'}
+                        aria-expanded={leftSidebarView === 'listview'}
                         label="List view"
                     />
                 </Header.Fill>
@@ -90,11 +99,10 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                     <BlockInspector />
                 </Sidebar.Fill>
                 <div className="block-editor__canvas-area">
-                    {isListViewOpen && (
-                        <div className="block-editor__list-view-panel">
-                            <ListView />
-                        </div>
-                    )}
+                    <LeftSidebar
+                        activeView={leftSidebarView}
+                        onClose={() => setLeftSidebarView(null)}
+                    />
                     <BlockCanvas
                         height="100%"
                         styles={contentStyles}
