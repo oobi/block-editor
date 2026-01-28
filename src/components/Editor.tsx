@@ -1,8 +1,8 @@
-import { useState, useEffect, createElement, StrictMode, createRoot } from '@wordpress/element'
+import { useState, useEffect, createElement, StrictMode, createRoot, useMemo } from '@wordpress/element'
 import type { Root } from 'react-dom/client'
 import apiFetch from '@wordpress/api-fetch'
 import { SlotFillProvider } from '@wordpress/components'
-import { parse, serialize } from '@wordpress/blocks'
+import { parse, serialize, createBlock } from '@wordpress/blocks'
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts'
 import { doAction, applyFilters } from "@wordpress/hooks"
 
@@ -40,6 +40,30 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
         }
     })
 
+    /**
+     * Check if a block is an empty paragraph
+     */
+    const isEmptyParagraph = (block: any) => {
+        return block?.name === 'core/paragraph' && 
+               (!block.attributes?.content || block.attributes.content === '')
+    }
+
+    /**
+     * Ensure blocks always have a trailing empty paragraph for easy editing
+     */
+    const ensureTrailingParagraph = (blockList: any[]) => {
+        if (blockList.length === 0) {
+            return [createBlock('core/paragraph')]
+        }
+        
+        const lastBlock = blockList[blockList.length - 1]
+        if (!isEmptyParagraph(lastBlock)) {
+            return [...blockList, createBlock('core/paragraph')]
+        }
+        
+        return blockList
+    }
+
     useEffect(() => {
         registerBlocks(settings.disabledCoreBlocks)
 
@@ -58,14 +82,24 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
     }, [])
 
     useEffect(() => {
-        if (value) {
-            setBlocks(parse(value))
-        }
+        const parsedBlocks = value ? parse(value) : []
+        setBlocks(ensureTrailingParagraph(parsedBlocks))
     }, [value]);
 
     useEffect(() => {
-        onChange(serialize(blocks))
+        // Serialize blocks but remove trailing empty paragraph for storage
+        const blocksToSerialize = blocks.length > 0 && isEmptyParagraph(blocks[blocks.length - 1])
+            ? blocks.slice(0, -1)
+            : blocks
+        onChange(serialize(blocksToSerialize))
     }, [blocks])
+
+    /**
+     * Handle block changes - ensure trailing empty paragraph (like WordPress does on blur)
+     */
+    const handleBlocksChange = (newBlocks: any[]) => {
+        setBlocks(ensureTrailingParagraph(newBlocks))
+    }
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen)
@@ -87,7 +121,7 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
                         >
                             <BlockEditor
                                 blocks={blocks}
-                                onChange={setBlocks}
+                                onChange={handleBlocksChange}
                                 undo={undo}
                                 redo={redo}
                                 canUndo={canUndo}
