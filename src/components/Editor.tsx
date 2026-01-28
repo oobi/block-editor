@@ -126,8 +126,8 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
                         <KeyboardShortcuts.Register/>
                         <KeyboardShortcuts/>
 
-                        <Header 
-                            toggleSidebar={toggleSidebar} 
+                        <Header
+                            toggleSidebar={toggleSidebar}
                             sidebarOpen={sidebarOpen}
                             toggleCodeEditor={toggleCodeEditor}
                             isCodeEditor={isCodeEditor}

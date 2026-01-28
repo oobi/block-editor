@@ -35,7 +35,7 @@ const CodeEditor = ({ blocks, onChange, onExit }: CodeEditorProps) => {
         <div className="block-editor-code-editor">
             <div className="block-editor-code-editor__header">
                 <span className="block-editor-code-editor__label">Editing code</span>
-                <button 
+                <button
                     className="block-editor-code-editor__exit"
                     onClick={handleExit}
                     type="button"

@@ -21,17 +21,17 @@ const Header = ({ toggleSidebar, sidebarOpen, toggleCodeEditor, isCodeEditor }: 
         >
             <Slot className="block-editor__header-toolbar"  bubblesVirtually />
             <div className="block-editor__header-actions">
-                <ToolbarButton 
-                    onClick={toggleCodeEditor} 
-                    isPressed={isCodeEditor} 
-                    icon={codeIcon} 
-                    label={isCodeEditor ? 'Exit code editor' : 'Code editor'} 
+                <ToolbarButton
+                    onClick={toggleCodeEditor}
+                    isPressed={isCodeEditor}
+                    icon={codeIcon}
+                    label={isCodeEditor ? 'Exit code editor' : 'Code editor'}
                 />
-                <ToolbarButton 
-                    onClick={toggleSidebar} 
-                    isPressed={sidebarOpen} 
-                    icon={cogIcon} 
-                    label={'Settings'} 
+                <ToolbarButton
+                    onClick={toggleSidebar}
+                    isPressed={sidebarOpen}
+                    icon={cogIcon}
+                    label={'Settings'}
                 />
             </div>
         </div>
