@@ -18,7 +18,7 @@ interface LeftSidebarProps {
 const LeftSidebar = ({ activeView, onClose }: LeftSidebarProps) => {
     const isOpen = activeView !== null
     const [listViewTab, setListViewTab] = useState<ListViewTab>('list-view')
-    
+
     const sidebarClasses = [
         'block-editor__left-sidebar',
         isOpen ? 'is-open' : ''

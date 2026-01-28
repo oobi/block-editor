@@ -138,6 +138,58 @@ $test: 1;
         font-size: 13px;
     }
 
+    // Custom HTML block inline editor styles
+    .block-library-html__edit-container {
+        border: 1px solid $border-color;
+        border-radius: 2px;
+        background: #fff;
+        box-shadow: inset 0 0 0 1px $border-color;
+    }
+
+    .block-library-html__edit-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        background: #f0f0f0;
+        border-bottom: 1px solid $border-color;
+        font-size: 13px;
+        font-weight: 500;
+        color: #1e1e1e;
+    }
+
+    .block-library-html__edit-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .block-library-html__textarea {
+        display: block !important;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 250px;
+        padding: 16px;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        resize: vertical;
+        font-family: Menlo, Consolas, monaco, monospace;
+        font-size: 14px;
+        line-height: 1.8;
+        color: #1e1e1e;
+        background: #fff;
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
+    .block-library-html__preview {
+        padding: 16px;
+        min-height: 40px;
+    }
+
     .block-editor__editor {
         flex: 1;
         overflow: hidden;

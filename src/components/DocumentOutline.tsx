@@ -50,11 +50,11 @@ const DocumentOutline = () => {
     const { blocks, headings, wordCountValue, characterCount, readingTime } = useSelect((select) => {
         const { getBlocks } = select(blockEditorStore) as any
         const allBlocks = getBlocks()
-        
+
         // Serialize blocks to get content for word/character count
         const content = serialize(allBlocks)
         const textContent = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
-        
+
         const words = wordCount(textContent, 'words')
         const characters = textContent.length
         const minutes = Math.ceil(words / AVERAGE_READING_RATE)
