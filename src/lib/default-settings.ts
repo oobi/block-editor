@@ -49,7 +49,7 @@ const defaultSettings: EditorSettings = {
     // WordPress settings
     alignWide: true,
     supportsLayout: true,
-    
+
     // Layout and typography settings
     // - layout: enables wide/full width alignment options
     // - typography.textAlign: enables text alignment controls (left/center/right)
