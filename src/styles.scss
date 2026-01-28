@@ -148,3 +148,9 @@ $test: 1;
         border: none;
     }
 }
+
+// Editor canvas content styles (applied inside the iframe)
+.is-root-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
