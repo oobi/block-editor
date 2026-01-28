@@ -14,12 +14,14 @@ interface LeftSidebarProps {
 }
 
 const LeftSidebar = ({ activeView, onClose }: LeftSidebarProps) => {
-    if (!activeView) {
-        return null
-    }
+    const isOpen = activeView !== null
+    const sidebarClasses = [
+        'block-editor__left-sidebar',
+        isOpen ? 'is-open' : ''
+    ].filter(Boolean).join(' ')
 
     return (
-        <div className="block-editor__left-sidebar">
+        <div className={sidebarClasses}>
             {activeView === 'listview' && (
                 <div className="block-editor-tabbed-sidebar">
                     <div className="block-editor-tabbed-sidebar__tablist-and-close-button">
