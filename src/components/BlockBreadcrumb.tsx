@@ -16,8 +16,6 @@ const BlockBreadcrumb = ({ rootLabelText = 'Document' }: BlockBreadcrumbProps) =
             getSelectedBlockClientId,
             getBlockParents,
             getSelectionStart,
-            getBlocks,
-            getBlock,
         } = select(blockEditorStore)
 
         const selectedBlockClientId = getSelectedBlockClientId()
@@ -25,15 +23,6 @@ const BlockBreadcrumb = ({ rootLabelText = 'Document' }: BlockBreadcrumbProps) =
         const blockParents = selectedBlockClientId
             ? getBlockParents(selectedBlockClientId, true)
             : []
-
-        console.log('[BlockBreadcrumb] Debug:', {
-            selectedBlockClientId,
-            selectionStart,
-            blockParents,
-            blockParentsLength: blockParents.length,
-            allBlocks: getBlocks(),
-            selectedBlock: selectedBlockClientId ? getBlock(selectedBlockClientId) : null,
-        })
 
         return {
             clientId: selectedBlockClientId,
