@@ -157,9 +157,21 @@ $test: 1;
     }
 
     .block-editor__inserter-toggle {
+        background: var(--wp-admin-theme-color, #007cba) !important;
+        color: #fff !important;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        svg {
+            transition: transform 0.2s ease;
+        }
+
         &.is-pressed {
-            background: var(--wp-admin-theme-color, #007cba);
-            color: #fff;
+            background: #1e1e1e !important;
+            color: #fff !important;
+
+            svg {
+                transform: rotate(45deg);
+            }
         }
     }
 
