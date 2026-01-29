@@ -18,6 +18,8 @@ import BottomBlockAppender from './BottomBlockAppender'
 import EditorSettings from '../interfaces/editor-settings'
 import Block from '../interfaces/block'
 import Notices from "./Notices"
+import type { DeviceType } from './DevicePreview'
+import useResizeCanvas from '../hooks/useResizeCanvas'
 
 import '@wordpress/format-library'
 
@@ -28,12 +30,14 @@ interface BlockEditorProps {
     undo?: () => void,
     redo?: () => void,
     canUndo?: boolean,
-    canRedo?: boolean
+    canRedo?: boolean,
+    deviceType?: DeviceType
 }
 
-const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo }: BlockEditorProps) => {
+const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo, deviceType = 'Desktop' }: BlockEditorProps) => {
     const inputTimeout = useRef<NodeJS.Timeout|null>(null)
     const [leftSidebarView, setLeftSidebarView] = useState<LeftSidebarView | null>(null)
+    const canvasStyles = useResizeCanvas(deviceType)
 
     // Prepare content styles for the iframe
     const contentStyles = useMemo(() => {
@@ -115,18 +119,19 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo 
                         activeView={leftSidebarView}
                         onClose={() => setLeftSidebarView(null)}
                     />
-                    <BlockCanvas
-                        height="100%"
-                        styles={contentStyles}
-                    >
-                        <BlockList layout={rootLayout} />
-                        <BottomBlockAppender />
-                    </BlockCanvas>
+                    <div className="block-editor__canvas-wrapper" style={canvasStyles}>
+                        <BlockCanvas
+                            height="100%"
+                            styles={contentStyles}
+                        >
+                            <BlockList layout={rootLayout} />
+                            <BottomBlockAppender />
+                        </BlockCanvas>
+                    </div>
                 </div>
                 <div className="block-editor__footer">
                     <BlockBreadcrumb rootLabelText="Document" />
                 </div>
-                <Popover.Slot/>
             </BlockEditorProvider>
         </div>
     );

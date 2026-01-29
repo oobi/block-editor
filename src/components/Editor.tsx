@@ -1,7 +1,7 @@
 import { useState, useEffect, createElement, StrictMode, createRoot, useMemo } from '@wordpress/element'
 import type { Root } from 'react-dom/client'
 import apiFetch from '@wordpress/api-fetch'
-import { SlotFillProvider } from '@wordpress/components'
+import { SlotFillProvider, Popover } from '@wordpress/components'
 import { parse, serialize } from '@wordpress/blocks'
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts'
 import { doAction, applyFilters } from "@wordpress/hooks"
@@ -12,6 +12,7 @@ import BlockEditor from './BlockEditor'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import CodeEditor from './CodeEditor'
+import DevicePreview, { DeviceType } from './DevicePreview'
 import BindInput from '../lib/bind-input'
 import EditorSettings from '../interfaces/editor-settings'
 import { select, dispatch, useSelect, useDispatch } from '@wordpress/data'
@@ -32,6 +33,7 @@ export interface EditorProps {
 const Editor = ({ settings, onChange, input, value }: EditorProps) => {
     const [sidebarOpen, setSidebarOpen] = useState(true)
     const [isCodeEditor, setIsCodeEditor] = useState(false)
+    const [deviceType, setDeviceType] = useState<DeviceType>('Desktop')
     const { setBlocks, undo, redo } = useDispatch('block-editor')
 
     const { blocks, canUndo, canRedo } = useSelect(select => {
@@ -103,6 +105,7 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
                             sidebarOpen={sidebarOpen}
                             toggleCodeEditor={toggleCodeEditor}
                             isCodeEditor={isCodeEditor}
+                            actionSlot={<DevicePreview deviceType={deviceType} setDeviceType={setDeviceType} />}
                         />
 
                         <div
@@ -124,10 +127,12 @@ const Editor = ({ settings, onChange, input, value }: EditorProps) => {
                                     canUndo={canUndo}
                                     canRedo={canRedo}
                                     settings={settings}
+                                    deviceType={deviceType}
                                 />
                             )}
 
                             {sidebarOpen && <Sidebar/>}
+                            <Popover.Slot/>
                         </div>
                     </div>
                 </ShortcutProvider>

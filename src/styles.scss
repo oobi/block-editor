@@ -206,11 +206,22 @@ $test: 1;
         flex-direction: row;
         min-height: 0;
         overflow: hidden;
+        background: #f0f0f0;
+    }
+
+    .block-editor__canvas-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        transition: width 0.2s ease;
 
         // Target the BlockCanvas wrapper div that has inline height/display styles
         > div[style*="height"] {
             flex: 1;
             min-width: 0;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     }
 

@@ -10,10 +10,11 @@ interface HeaderProps {
     toggleSidebar: () => void,
     sidebarOpen: boolean,
     toggleCodeEditor: () => void,
-    isCodeEditor: boolean
+    isCodeEditor: boolean,
+    actionSlot?: React.ReactNode
 }
 
-const Header = ({ toggleSidebar, sidebarOpen, toggleCodeEditor, isCodeEditor }: HeaderProps) => {
+const Header = ({ toggleSidebar, sidebarOpen, toggleCodeEditor, isCodeEditor, actionSlot }: HeaderProps) => {
     return (
         <div
             className="block-editor__header"
@@ -21,6 +22,7 @@ const Header = ({ toggleSidebar, sidebarOpen, toggleCodeEditor, isCodeEditor }: 
         >
             <Slot className="block-editor__header-toolbar"  bubblesVirtually />
             <div className="block-editor__header-actions">
+                {actionSlot}
                 <ToolbarButton
                     onClick={toggleCodeEditor}
                     isPressed={isCodeEditor}
