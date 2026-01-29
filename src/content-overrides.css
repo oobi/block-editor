@@ -1,0 +1,10 @@
+/**
+ * Content overrides for the block editor iframe
+ * These styles are loaded into the BlockCanvas iframe alongside WordPress content.css
+ */
+
+/* Default block appender - match paragraph margins */
+.block-editor-default-block-appender .block-editor-default-block-appender__content {
+    margin-block-start: 1em !important;
+    margin-block-end: 1em !important;
+}
