@@ -11,22 +11,22 @@ import { _x } from '@wordpress/i18n'
  */
 const BottomBlockAppender = () => {
     const { insertDefaultBlock, selectBlock } = useDispatch(blockEditorStore)
-    
+
     const { lastBlock, lastBlockIsEmpty } = useSelect((select) => {
         const blocks = select(blockEditorStore).getBlocks()
         const last = blocks[blocks.length - 1]
-        
+
         if (!last) {
             return { lastBlock: null, lastBlockIsEmpty: false }
         }
-        
+
         // Check if it's a paragraph block
         const isParagraph = last.name === 'core/paragraph'
-        
+
         // Check if it's empty (no content or only whitespace)
-        const isEmpty = !last.attributes?.content || 
+        const isEmpty = !last.attributes?.content ||
                        last.attributes.content.trim() === ''
-        
+
         return {
             lastBlock: last,
             lastBlockIsEmpty: isParagraph && isEmpty
