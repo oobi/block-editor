@@ -11,11 +11,6 @@ import type { DeviceType } from '../components/DevicePreview'
 export default function useResizeCanvas(deviceType: DeviceType) {
     const [actualWidth, updateActualWidth] = useState(window.innerWidth)
 
-    // Debug: log device type changes
-    useEffect(() => {
-        console.debug('[useResizeCanvas] deviceType changed =>', deviceType)
-    }, [deviceType])
-
     useEffect(() => {
         if (deviceType === 'Desktop') {
             return
@@ -78,9 +73,6 @@ export default function useResizeCanvas(deviceType: DeviceType) {
                     marginRight: marginHorizontal,
                 }
         }
-
-        // Debug: log computed styles
-        console.debug('[useResizeCanvas] styles for', device, '=>', styles)
 
         return styles
     }

@@ -48,9 +48,6 @@ const DevicePreview = ({ deviceType, setDeviceType }: DevicePreviewProps) => {
                         choices={choices}
                         value={deviceType}
                         onSelect={(value) => {
-                            // Debug: trace selection
-                            // eslint-disable-next-line no-console
-                            console.debug('[DevicePreview] selected =>', value)
                             setDeviceType(value as DeviceType)
                             onClose()
                         }}
