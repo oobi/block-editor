@@ -1,16 +1,8 @@
 @use "sass:math";
 
-// Import pre-built WordPress CSS files
-@import "../node_modules/@wordpress/components/build-style/style.css";
-@import "../node_modules/@wordpress/block-editor/build-style/style.css";
-@import "../node_modules/@wordpress/block-editor/build-style/content.css";
-@import "../node_modules/@wordpress/block-library/build-style/style.css";
-@import "../node_modules/@wordpress/block-library/build-style/theme.css";
-@import "../node_modules/@wordpress/block-library/build-style/editor.css";
-@import "../node_modules/@wordpress/format-library/build-style/style.css";
-
-// Import our content overrides (loaded into iframe)
-@import "./content-overrides.css";
+// NOTE: Pre-built WordPress CSS files are concatenated separately in the build
+// script (build:css-deps) because Dart Sass does not inline @import of .css files.
+// See package.json build scripts for the concatenation step.
 
 $sidebar-width: 300px;
 $border-color: #e0e0e0;

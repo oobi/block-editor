@@ -22,8 +22,10 @@
     "watch": "npm run build:ts -- --watch & npm run build:sass -- --watch",
     "start": "vite playground",
     "prebuild": "npm run clean",
-    "build": "npm run build:ts && npm run build:sass && npm run copy:css",
-    "build:sass": "sass src/styles.scss dist/styles.css",
+    "build": "npm run build:ts && npm run build:css && npm run copy:css",
+    "build:css-deps": "cat node_modules/@wordpress/components/build-style/style.css node_modules/@wordpress/block-editor/build-style/style.css node_modules/@wordpress/block-editor/build-style/content.css node_modules/@wordpress/block-library/build-style/style.css node_modules/@wordpress/block-library/build-style/theme.css node_modules/@wordpress/block-library/build-style/editor.css node_modules/@wordpress/format-library/build-style/style.css src/content-overrides.css > dist/css-deps.css",
+    "build:sass": "sass src/styles.scss dist/styles-compiled.css",
+    "build:css": "mkdir -p dist && npm run build:css-deps && npm run build:sass && cat dist/css-deps.css dist/styles-compiled.css > dist/styles.css && rm dist/css-deps.css dist/styles-compiled.css dist/styles-compiled.css.map",
     "build:ts": "tsc",
     "copy:css": "cp src/content-overrides.css dist/"
   },

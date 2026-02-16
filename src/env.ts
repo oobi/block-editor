@@ -1,4 +1,6 @@
 // @ts-nocheck
+import * as hooks from '@wordpress/hooks'
+
 window.process = {
     env: {
         FORCE_REDUCED_MOTION: false,
@@ -7,4 +9,4 @@ window.process = {
     }
 }
 
-window.wp = {}
+window.wp = { hooks }
