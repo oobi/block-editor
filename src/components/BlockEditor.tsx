@@ -54,6 +54,28 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo,
         }
     }, [settings.__experimentalFeatures?.layout])
 
+    // Generate root-level constrained layout CSS (mirrors WordPress visual-editor's <LayoutStyle>)
+    const rootLayoutStyles = useMemo(() => {
+        const selector = '.block-editor-block-list__layout.is-root-container'
+        const { contentSize, wideSize } = rootLayout
+
+        if (!contentSize && !wideSize) return ''
+
+        return `
+            ${selector} > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+                max-width: ${contentSize ?? wideSize};
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+            ${selector} > .alignwide {
+                max-width: ${wideSize ?? contentSize};
+            }
+            ${selector} > .alignfull {
+                max-width: none;
+            }
+        `
+    }, [rootLayout])
+
     // Prepare editor settings with iframe initialization flag
     const editorSettings = useMemo(() => {
         return {
@@ -124,6 +146,7 @@ const BlockEditor = ({ settings, onChange, blocks, undo, redo, canUndo, canRedo,
                             height="100%"
                             styles={contentStyles}
                         >
+                            {rootLayoutStyles && <style>{rootLayoutStyles}</style>}
                             <BlockList layout={rootLayout} />
                             <BottomBlockAppender />
                         </BlockCanvas>

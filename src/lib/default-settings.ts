@@ -1,5 +1,4 @@
 import EditorSettings from "../interfaces/editor-settings";
-import iframeStyles from "./iframe-styles";
 
 // Default editor styles that WordPress uses when no theme styles are present
 const defaultEditorStylesCss = `
@@ -93,11 +92,11 @@ const defaultSettings: EditorSettings = {
     },
 
     // Default editor styles for the iframe content
-    // iframeStyles provides layout CSS (flex, grid, flow), block styles, and
-    // CSS custom properties that WordPress normally generates server-side.
+    // Layout CSS, block styles, and CSS custom properties are now generated
+    // server-side by GlobalStylesGenerator (PHP) and served via
+    // __unstableResolvedAssets — see laraberg init.ts.
     styles: [
-        { css: defaultEditorStylesCss },
-        { css: iframeStyles }
+        { css: defaultEditorStylesCss }
     ],
 
     // Resolved assets - these are injected into the iframe's <head>
